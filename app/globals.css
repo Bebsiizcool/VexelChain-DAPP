@@ -1,29 +1,29 @@
 @import "tailwindcss";
 
 @theme {
-  --color-background: #020617;
+  --color-background: #0B0E25;
   --color-foreground: #f8fafc;
-  
-  --color-bluepeak-dark: #0f172a;
-  --color-bluepeak-light: #38bdf8;
-  --color-bluepeak-accent: #00f2ea;
-  
+
+  --color-bluepeak-dark: #0B0E25;
+  --color-bluepeak-light: #00f2ea;
+  --color-bluepeak-accent: #9F5AFD;
+
   --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
 
 :root {
-  --background: #020617; /* Slate 950 */
-  --foreground: #f8fafc; /* Slate 50 */
+  --background: #0B0E25;
+  --foreground: #f8fafc;
 }
 
 body {
   background-color: var(--background);
   color: var(--foreground);
   font-family: var(--font-sans);
-  background-image: 
-    radial-gradient(at 0% 0%, hsla(253,16%,7%,1) 0, transparent 50%), 
-    radial-gradient(at 50% 0%, hsla(225,39%,30%,1) 0, transparent 50%), 
-    radial-gradient(at 100% 0%, hsla(339,49%,30%,1) 0, transparent 50%);
+  background-image:
+    radial-gradient(at 0% 0%, #0B0E25 0, transparent 50%),
+    radial-gradient(at 50% 0%, #1a1f4d 0, transparent 50%),
+    radial-gradient(at 100% 0%, #2d1b4e 0, transparent 50%);
   min-height: 100vh;
 }
 

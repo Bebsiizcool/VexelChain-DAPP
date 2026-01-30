@@ -34,9 +34,9 @@ export default function Home() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8 }}
           >
-            <h1 className="text-5xl md:text-7xl font-black tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-white via-cyan-200 to-blue-500 mb-4 drop-shadow-2xl">
+            <h1 className="text-5xl md:text-7xl font-black tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-white via-[#00f2ea] to-[#9F5AFD] mb-4 drop-shadow-2xl">
               EXPERIENCE <br />
-              <span className="text-cyan-400">THE FUTURE</span>
+              <span className="text-[#00f2ea]">THE FUTURE</span>
             </h1>
             <p className="text-xl text-slate-300 max-w-lg mx-auto md:mx-0 leading-relaxed">
               Connect to the next generation of decentralized finance. Safe, fast, and built for tomorrow.
