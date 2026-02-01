@@ -47,7 +47,7 @@ export const Header: React.FC = () => {
         {/* Center: Constructed Brand (Blue + Overflowing Logo + Peak) */}
         <div className="absolute left-1/2 top-0 -translate-x-1/2 h-full flex items-center justify-center z-20 pointer-events-none w-1/3">
           <Link to="/" className="flex items-center gap-0 pointer-events-auto group">
-            {/* Visual Updates: No Italic, Reduced Glow */}
+            {/* Visual Updates: No Italic, Reduced Glow, Tight Gap */}
             <span className="text-3xl font-black tracking-tighter text-cyan-400 drop-shadow-[0_0_5px_rgba(34,211,238,0.3)] uppercase" style={{ fontFamily: 'system-ui, sans-serif' }}>Blue</span>
 
             <div className="relative">
@@ -69,34 +69,37 @@ export const Header: React.FC = () => {
         <div className="flex items-center justify-end gap-4 z-10 w-1/3">
 
           {/* Network Selector */}
-          <div className="relative" ref={networkRef}>
-            <button
-              onClick={() => setIsNetworkOpen(!isNetworkOpen)}
-              className="flex items-center gap-2 px-4 py-2 rounded-full bg-slate-800 hover:bg-slate-700 border border-slate-700 transition-all text-sm font-mono text-cyan-400"
-            >
-              <div className={`w-2 h-2 rounded-full ${currentNetwork ? 'bg-green-500' : 'bg-yellow-500'} animate-pulse`}></div>
-              <span className="hidden lg:inline">{currentNetwork?.chainName || 'Wrong Network'}</span>
-              <svg className="w-4 h-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
-            </button>
+          {/* Network Selector */}
+          {isConnected && (
+            <div className="relative" ref={networkRef}>
+              <button
+                onClick={() => setIsNetworkOpen(!isNetworkOpen)}
+                className="flex items-center gap-2 px-4 py-2 rounded-full bg-slate-800 hover:bg-slate-700 border border-slate-700 transition-all text-sm font-mono text-cyan-400"
+              >
+                <div className={`w-2 h-2 rounded-full ${currentNetwork ? 'bg-green-500' : 'bg-yellow-500'} animate-pulse`}></div>
+                <span className="hidden lg:inline">{currentNetwork?.chainName || 'Wrong Network'}</span>
+                <svg className="w-4 h-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
+              </button>
 
-            {isNetworkOpen && (
-              <div className="absolute top-full mt-2 right-0 w-56 bg-slate-900 border border-white/10 rounded-xl overflow-hidden shadow-xl z-50 animate-in fade-in zoom-in-95 duration-200">
-                <div className="p-2 space-y-1">
-                  <div className="px-3 py-2 text-xs font-bold text-slate-500 uppercase tracking-wider">Select Network</div>
-                  {Object.values(NETWORKS).map((net) => (
-                    <button
-                      key={net.chainId}
-                      onClick={() => { switchNetwork(net.chainId); setIsNetworkOpen(false); }}
-                      className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors ${currentNetwork?.chainId === net.chainId ? 'bg-cyan-500/10 text-cyan-400' : 'text-slate-300 hover:bg-white/5'}`}
-                    >
-                      <div className={`w-2 h-2 rounded-full ${currentNetwork?.chainId === net.chainId ? 'bg-cyan-400' : 'bg-slate-600'}`}></div>
-                      {net.chainName}
-                    </button>
-                  ))}
+              {isNetworkOpen && (
+                <div className="absolute top-full mt-2 right-0 w-56 bg-slate-900 border border-white/10 rounded-xl overflow-hidden shadow-xl z-50 animate-in fade-in zoom-in-95 duration-200">
+                  <div className="p-2 space-y-1">
+                    <div className="px-3 py-2 text-xs font-bold text-slate-500 uppercase tracking-wider">Select Network</div>
+                    {Object.values(NETWORKS).map((net) => (
+                      <button
+                        key={net.chainId}
+                        onClick={() => { switchNetwork(net.chainId); setIsNetworkOpen(false); }}
+                        className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors ${currentNetwork?.chainId === net.chainId ? 'bg-cyan-500/10 text-cyan-400' : 'text-slate-300 hover:bg-white/5'}`}
+                      >
+                        <div className={`w-2 h-2 rounded-full ${currentNetwork?.chainId === net.chainId ? 'bg-cyan-400' : 'bg-slate-600'}`}></div>
+                        {net.chainName}
+                      </button>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            )}
-          </div>
+              )}
+            </div>
+          )}
 
           {/* Wallet Connection */}
           {isConnected ? (

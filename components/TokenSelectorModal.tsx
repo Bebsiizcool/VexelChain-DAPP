@@ -50,9 +50,13 @@ export const TokenSelectorModal: React.FC<TokenSelectorModalProps> = ({ isOpen, 
                                 className="w-full flex items-center justify-between p-3 rounded-xl hover:bg-white/5 transition-colors group text-left"
                             >
                                 <div className="flex items-center gap-3">
-                                    <div className={`w-10 h-10 rounded-full ${token.iconColor} flex items-center justify-center text-white font-bold text-sm shadow-lg`}>
-                                        {token.symbol[0]}
-                                    </div>
+                                    {token.image ? (
+                                        <img src={token.image} alt={token.symbol} className="w-10 h-10 rounded-full shadow-lg" />
+                                    ) : (
+                                        <div className={`w-10 h-10 rounded-full ${token.iconColor} flex items-center justify-center text-white font-bold text-sm shadow-lg`}>
+                                            {token.symbol[0]}
+                                        </div>
+                                    )}
                                     <div>
                                         <div className="font-bold text-white group-hover:text-cyan-400 transition-colors">{token.symbol}</div>
                                         <div className="text-xs text-slate-400">{token.name}</div>

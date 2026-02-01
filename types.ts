@@ -7,6 +7,7 @@ export interface Token {
   volume: string;
   marketCap: string;
   iconColor: string;
+  image?: string;
 }
 
 export interface PortfolioItem {

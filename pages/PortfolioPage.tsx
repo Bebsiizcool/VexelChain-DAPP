@@ -50,7 +50,7 @@ export const PortfolioPage: React.FC = () => {
     }
 
     const nativeSymbol = currentNetwork?.nativeCurrency.symbol || 'ETH';
-    const nativePrice = prices[nativeSymbol]?.current_price || prices['ETH']?.current_price || 0;
+    const nativePrice = prices[nativeSymbol]?.usd || prices['ETH']?.usd || 0;
     const nativeBalanceVal = parseFloat(balance || '0');
     const nativeValue = nativeBalanceVal * nativePrice;
 
@@ -64,15 +64,16 @@ export const PortfolioPage: React.FC = () => {
             iconColor: 'bg-indigo-500' // Simple default
         },
         ...Object.entries(portfolio).map(([symbol, amount]) => {
-            const price = prices[symbol]?.current_price || 0;
+            const price = Number(prices[symbol]?.usd || 0);
+            const value = Number(amount) * price;
             return {
                 symbol,
-                balance: amount,
-                price: price,
-                value: amount * price,
+                balance: Number(amount),
+                price,
+                value,
                 iconColor: 'bg-slate-700' // Default
             };
-        }).filter(a => a.balance > 0.000001) // Filter out zero/dust
+        }).filter(a => (a.balance as number) > 0.000001) // Filter out zero/dust
     ];
 
     const totalNetWorth = allAssets.reduce((acc, curr) => acc + curr.value, 0);

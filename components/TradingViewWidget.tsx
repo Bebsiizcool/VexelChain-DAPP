@@ -35,7 +35,7 @@ export const TradingViewWidget: React.FC<TradingViewWidgetProps> = ({ symbol }) 
         if (document.getElementById('tradingview_widget_container') && 'TradingView' in window) {
             new (window as any).TradingView.widget({
                 autosize: true,
-                symbol: `BINANCE:${symbol}USD`, // Mapping to Binance for simplicity
+                symbol: symbol, // Use exact symbol passed from prop
                 interval: "D",
                 timezone: "Etc/UTC",
                 theme: "dark",
