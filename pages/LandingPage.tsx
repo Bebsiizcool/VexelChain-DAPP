@@ -1,59 +1,96 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useWallet } from '../contexts/WalletContext';
 
 export const LandingPage: React.FC = () => {
     const navigate = useNavigate();
+    const { connectWallet, isConnected } = useWallet();
 
     return (
-        <div className="min-h-[calc(100vh-64px)] flex flex-col items-center justify-center relative overflow-hidden">
-            {/* Background Effects */}
-            <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-0">
-                <div className="absolute top-[20%] left-[20%] w-[500px] h-[500px] bg-purple-600/20 rounded-full blur-[120px] animate-pulse-slow"></div>
-                <div className="absolute bottom-[20%] right-[20%] w-[500px] h-[500px] bg-blue-600/20 rounded-full blur-[120px] animate-pulse-slow delay-1000"></div>
+        <div className="min-h-[calc(100vh-80px)] flex flex-col items-center justify-end pb-20 relative overflow-hidden bg-black">
+            {/* Layer 1: Deep Sky Background (Static) */}
+            <div className="absolute inset-0 z-0">
+                <img
+                    src="/final_sky_bg.png"
+                    alt="Space Background"
+                    className="w-full h-full object-cover opacity-100"
+                />
             </div>
 
-            <div className="container mx-auto px-4 z-10 flex flex-col items-center text-center">
-                <div className="mb-6 inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 backdrop-blur-md">
-                    <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
-                    <span className="text-xs font-medium text-cyan-300">V2.0 is Live Now</span>
-                </div>
+            {/* Layer 2: Rotating Red Moon (Behind Landscape) */}
+            <div
+                className="absolute top-[15%] md:top-[-25%] left-1/2 -translate-x-1/2 w-[160vw] h-[160vw] md:w-[1600px] md:h-[1600px] z-0 opacity-100 pointer-events-none"
+                style={{
+                    WebkitMaskImage: 'linear-gradient(to bottom, black 10%, transparent 85%)',
+                    maskImage: 'linear-gradient(to bottom, black 10%, transparent 85%)'
+                }}
+            >
+                <img
+                    src="/final_red_moon_glow.png"
+                    alt="Red Moon"
+                    className="w-full h-full object-contain animate-spin-slow"
+                    style={{ animationDuration: '20s' }}
+                />
+            </div>
 
-                <h1 className="text-6xl md:text-8xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white via-blue-100 to-slate-400 mb-6 tracking-tight leading-tight">
-                    The Future of <br />
-                    <span className="bg-gradient-to-r from-blue-500 to-cyan-400 bg-clip-text text-transparent">DeFi Trading</span>
+            {/* Layer 3: Martian Landscape (Mid-Ground) */}
+            <div className="absolute bottom-0 left-0 w-full h-[40vh] md:h-[80vh] z-10 pointer-events-none">
+                <img
+                    src="/final_landscape_glow.png"
+                    alt="Martian Terrain"
+                    className="w-full h-full object-cover object-bottom"
+                />
+            </div>
+
+            {/* Layer 3.5: Headline Text (Behind Astronaut) */}
+            <div className="absolute top-[15%] md:top-[12%] left-0 w-full z-[15] flex flex-col items-center justify-center text-center pointer-events-none -translate-y-[45px]">
+                <h1 className="text-5xl md:text-9xl font-black text-white tracking-tighter leading-[0.9] drop-shadow-2xl uppercase">
+                    THE FUTURE IS <br />
+                    <span className="tracking-tighter [text-shadow:0_0_2px_white] block mt-2" style={{ wordSpacing: '220px' }}>VEXEL CHAIN</span>
                 </h1>
+            </div>
 
-                <p className="text-xl text-slate-400 max-w-2xl mb-10 leading-relaxed">
-                    Experience lightning-fast swaps, real-time analytics, and seamless portfolio management.
-                    Join thousands of users trading on BluePeak today.
-                </p>
+            {/* Layer 4: Astronaut (Fixed Foreground) */}
+            <div className="absolute bottom-0 md:bottom-[-10%] left-1/2 -translate-x-1/2 w-[160vw] md:w-[1000px] lg:w-[1400px] xl:w-[1600px] z-20 pointer-events-none">
+                <img
+                    src="/final_astronaut_glow.png"
+                    alt="BluePeak Pilot"
+                    className="w-full h-auto max-h-[100vh] object-contain drop-shadow-[0_0_50px_rgba(225,29,72,0.3)]"
+                />
+            </div>
 
-                <div className="flex flex-col sm:flex-row gap-4 mb-20">
-                    <button
-                        onClick={() => navigate('/dashboard')}
-                        className="px-8 py-4 bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 text-white font-bold rounded-xl shadow-lg shadow-blue-500/25 transition-all transform hover:scale-105 active:scale-95 text-lg"
-                    >
-                        Launch App
-                    </button>
-                    <button className="px-8 py-4 bg-white/5 hover:bg-white/10 border border-white/10 text-white font-bold rounded-xl backdrop-blur-sm transition-all text-lg">
-                        Read Documentation
-                    </button>
-                </div>
+            {/* Layer 5: Content Overlay (Top Section) - Left Aligned */}
+            <div className="absolute top-[50%] md:top-[55%] left-0 w-full z-30 px-6 md:px-12 lg:px-24 flex flex-col items-start text-left pointer-events-none">
+                <div className="pointer-events-auto max-w-[90vw] md:max-w-[500px] lg:max-w-[600px]">
+                    <div className="mb-8 pl-2">
+                        <h2 className="text-3xl md:text-5xl font-black text-white leading-tight mb-2 drop-shadow-xl font-sans tracking-tight">
+                            JOIN THE FUTURE OF <br />
+                            BLOCKCHAINS
+                        </h2>
+                        <p className="text-sm md:text-base text-slate-300 font-medium tracking-wide">
+                            Trade smarter and safer with VexelChain
+                        </p>
+                    </div>
 
-                {/* Stats Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-4xl">
-                    {[
-                        { label: 'Total Volume', value: '$12.5B+' },
-                        { label: 'Active Users', value: '250K+' },
-                        { label: 'Avg. Gas Cost', value: '<$0.01' }
-                    ].map((stat, i) => (
-                        <div key={i} className="glass-panel p-6 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm hover:bg-white/10 transition-colors">
-                            <div className="text-3xl font-bold text-white mb-1 group-hover:text-cyan-400 transition-colors">{stat.value}</div>
-                            <div className="text-sm text-slate-400">{stat.label}</div>
-                        </div>
-                    ))}
+                    <div className="flex flex-row gap-4 mb-16 pl-2">
+                        <button
+                            onClick={() => navigate('/dashboard')}
+                            className="px-8 py-3 bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-500 hover:to-red-500 text-white font-bold rounded-xl shadow-lg transition-all transform hover:scale-105 active:scale-95 text-base"
+                        >
+                            Get Started
+                        </button>
+                        <button
+                            onClick={() => navigate('/portfolio')}
+                            className="px-8 py-3 bg-gradient-to-r from-blue-800 to-indigo-900 hover:from-blue-700 hover:to-indigo-800 text-white font-bold rounded-xl shadow-lg transition-all transform hover:scale-105 active:scale-95 text-base"
+                        >
+                            Explore Now
+                        </button>
+                    </div>
                 </div>
             </div>
+
+            {/* Vignette Overlay */}
+            <div className="absolute inset-0 z-10 pointer-events-none bg-gradient-to-t from-black via-transparent to-black/80"></div>
         </div>
     );
 };

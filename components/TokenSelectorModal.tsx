@@ -32,7 +32,7 @@ export const TokenSelectorModal: React.FC<TokenSelectorModalProps> = ({ isOpen, 
                     <input
                         type="text"
                         placeholder="Search name or paste address"
-                        className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500/50 transition-colors"
+                        className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:border-crimson-500/50 transition-colors"
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
                         autoFocus
@@ -58,7 +58,7 @@ export const TokenSelectorModal: React.FC<TokenSelectorModalProps> = ({ isOpen, 
                                         </div>
                                     )}
                                     <div>
-                                        <div className="font-bold text-white group-hover:text-cyan-400 transition-colors">{token.symbol}</div>
+                                        <div className="font-bold text-white group-hover:text-crimson-400 transition-colors">{token.symbol}</div>
                                         <div className="text-xs text-slate-400">{token.name}</div>
                                     </div>
                                 </div>

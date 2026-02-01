@@ -186,7 +186,7 @@ export const SwapCard: React.FC<SwapCardProps> = ({ tokens }) => {
           <div className="flex justify-center -my-3 relative z-20">
             <button
               onClick={handleSwapTokens}
-              className="bg-slate-800 p-2 rounded-lg border border-white/10 text-cyan-400 hover:text-white hover:bg-cyan-500 transition-all shadow-lg"
+              className="bg-slate-800 p-2 rounded-lg border border-white/10 text-crimson-400 hover:text-white hover:bg-crimson-500 transition-all shadow-lg"
             >
               <Icons.ArrowRightLeft />
             </button>
@@ -233,7 +233,7 @@ export const SwapCard: React.FC<SwapCardProps> = ({ tokens }) => {
           </div>
           <div className="flex justify-between text-xs text-slate-400">
             <span>Network Cost (Est)</span>
-            <span className="text-cyan-400 flex items-center gap-1">
+            <span className="text-crimson-400 flex items-center gap-1">
               <Icons.Cpu /> ${gasPrice}
             </span>
           </div>
@@ -242,7 +242,7 @@ export const SwapCard: React.FC<SwapCardProps> = ({ tokens }) => {
         <button
           onClick={executeSwap}
           disabled={isSwapping || !fromAmount}
-          className="w-full mt-6 bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 text-white font-bold py-4 rounded-xl shadow-lg shadow-blue-500/25 transition-all neon-glow relative z-10 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full mt-6 bg-gradient-to-r from-red-700 to-crimson-600 hover:from-red-600 hover:to-crimson-500 text-white font-bold py-4 rounded-xl shadow-lg shadow-crimson-500/25 transition-all neon-glow relative z-10 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {isSwapping ? 'Swapping...' : 'Swap Tokens'}
         </button>

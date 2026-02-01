@@ -68,7 +68,7 @@ export const MarketAnalysis: React.FC<MarketAnalysisProps> = ({ token }) => {
         <div className="glass-panel p-6 rounded-xl border border-white/5 bg-slate-900/50 mt-4">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
                 <h3 className="text-lg font-bold text-white flex items-center gap-2">
-                    <span className="w-2 h-6 bg-gradient-to-b from-cyan-400 to-blue-600 rounded-full"></span>
+                    <span className="w-2 h-6 bg-gradient-to-b from-red-500 to-crimson-600 rounded-full"></span>
                     {analysis.title}
                 </h3>
 
@@ -78,7 +78,7 @@ export const MarketAnalysis: React.FC<MarketAnalysisProps> = ({ token }) => {
                         <button
                             key={tf}
                             onClick={() => setTimeframe(tf)}
-                            className={`px-3 py-1 rounded-md text-xs font-bold transition-all ${timeframe === tf ? 'bg-cyan-500 text-white shadow-lg' : 'text-slate-400 hover:text-white hover:bg-white/5'}`}
+                            className={`px-3 py-1 rounded-md text-xs font-bold transition-all ${timeframe === tf ? 'bg-crimson-500 text-white shadow-lg' : 'text-slate-400 hover:text-white hover:bg-white/5'}`}
                         >
                             {tf}
                         </button>
@@ -88,8 +88,8 @@ export const MarketAnalysis: React.FC<MarketAnalysisProps> = ({ token }) => {
 
             <div className="flex items-center gap-3 mb-4">
                 <div className={`px-3 py-1 rounded-full text-xs font-bold border ${analysis.sentiment === 'BULLISH' ? 'border-green-500/30 text-green-400 bg-green-500/10' :
-                        analysis.sentiment === 'BEARISH' ? 'border-red-500/30 text-red-400 bg-red-500/10' :
-                            'border-slate-500/30 text-slate-400 bg-slate-500/10'
+                    analysis.sentiment === 'BEARISH' ? 'border-red-500/30 text-red-400 bg-red-500/10' :
+                        'border-slate-500/30 text-slate-400 bg-slate-500/10'
                     }`}>
                     {analysis.sentiment}
                 </div>
@@ -105,7 +105,7 @@ export const MarketAnalysis: React.FC<MarketAnalysisProps> = ({ token }) => {
             <div className="mt-4 grid grid-cols-3 gap-4 border-t border-white/5 pt-4">
                 <div>
                     <div className="text-xs text-slate-500 uppercase font-bold">RSI ({timeframe})</div>
-                    <div className={`text-sm font-mono ${parseFloat(analysis.rsi) > 70 || parseFloat(analysis.rsi) < 30 ? 'text-orange-400' : 'text-cyan-400'}`}>
+                    <div className={`text-sm font-mono ${parseFloat(analysis.rsi) > 70 || parseFloat(analysis.rsi) < 30 ? 'text-orange-400' : 'text-crimson-400'}`}>
                         {analysis.rsi}
                     </div>
                 </div>

@@ -40,27 +40,27 @@ export const AIInsightCard: React.FC<AIInsightCardProps> = ({ token }) => {
 
     return (
         <div className="glass-panel p-5 rounded-xl border border-white/5 relative overflow-hidden group">
-            <div className="absolute top-0 right-0 w-32 h-32 bg-purple-500/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
+            <div className="absolute top-0 right-0 w-32 h-32 bg-red-600/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
 
             <h3 className="text-lg font-bold mb-3 flex items-center gap-2 relative z-10">
-                <span className="text-purple-400">AI</span> Insight
-                {loading && <span className="text-xs font-normal text-purple-400 animate-pulse ml-auto">Analyzing...</span>}
+                <span className="text-crimson-400">AI</span> Insight
+                {loading && <span className="text-xs font-normal text-crimson-400 animate-pulse ml-auto">Analyzing...</span>}
             </h3>
 
             <div className="relative z-10 min-h-[80px]">
                 {loading ? (
                     <div className="space-y-2 animate-pulse">
-                        <div className="h-2 bg-purple-500/20 rounded w-3/4"></div>
+                        <div className="h-2 bg-crimson-500/20 rounded w-3/4"></div>
                         <div className="h-2 bg-purple-500/20 rounded w-full"></div>
                         <div className="h-2 bg-purple-500/20 rounded w-5/6"></div>
                         <div className="flex justify-center mt-4">
                             <Icons.Cpu /> {/* Using generic icon as spinner placeholder if simple */}
-                            <div className="w-5 h-5 border-2 border-purple-500 border-t-transparent rounded-full animate-spin"></div>
+                            <div className="w-5 h-5 border-2 border-crimson-500 border-t-transparent rounded-full animate-spin"></div>
                         </div>
                     </div>
                 ) : analysis ? (
                     <div className="animate-in fade-in slide-in-from-bottom-2 duration-500">
-                        <p className="text-sm text-slate-200 leading-relaxed font-medium bg-purple-500/10 p-3 rounded-lg border border-purple-500/20">
+                        <p className="text-sm text-slate-200 leading-relaxed font-medium bg-crimson-500/10 p-3 rounded-lg border border-crimson-500/20">
                             "{analysis}"
                         </p>
                     </div>
@@ -75,7 +75,7 @@ export const AIInsightCard: React.FC<AIInsightCardProps> = ({ token }) => {
             {!loading && !analysis && (
                 <button
                     onClick={generateInsight}
-                    className="mt-4 w-full py-2 rounded-lg bg-purple-600/20 hover:bg-purple-600/30 border border-purple-500/30 text-purple-300 text-sm font-bold transition-all hover:scale-[1.02] relative z-10"
+                    className="mt-4 w-full py-2 rounded-lg bg-crimson-600/20 hover:bg-crimson-600/30 border border-crimson-500/30 text-crimson-300 text-sm font-bold transition-all hover:scale-[1.02] relative z-10"
                 >
                     Ask Advisor
                 </button>

@@ -47,21 +47,21 @@ export const Header: React.FC = () => {
         {/* Center: Constructed Brand (Blue + Overflowing Logo + Peak) */}
         <div className="absolute left-1/2 top-0 -translate-x-1/2 h-full flex items-center justify-center z-20 pointer-events-none w-1/3">
           <Link to="/" className="flex items-center gap-0 pointer-events-auto group">
-            {/* Visual Updates: No Italic, Reduced Glow, Tight Gap */}
-            <span className="text-3xl font-black tracking-tighter text-cyan-400 drop-shadow-[0_0_5px_rgba(34,211,238,0.3)] uppercase" style={{ fontFamily: 'system-ui, sans-serif' }}>Blue</span>
+            {/* Visual Updates: Red Theme */}
+            <span className="text-3xl font-black tracking-tighter text-crimson-500 drop-shadow-[0_0_5px_rgba(225,29,72,0.3)] uppercase" style={{ fontFamily: 'system-ui, sans-serif' }}>Blue</span>
 
             <div className="relative">
-              {/* Glow effect - Reduced opacity and blur */}
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-20 h-20 bg-blue-500/10 rounded-full blur-lg group-hover:bg-cyan-500/20 transition-colors"></div>
+              {/* Glow effect - Red */}
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-20 h-20 bg-red-600/10 rounded-full blur-lg group-hover:bg-crimson-500/20 transition-colors"></div>
               {/* Logo Image */}
               <img
                 src={logo}
                 alt="Logo"
-                className="h-32 w-auto object-contain transform translate-y-4 filter drop-shadow-[0_0_8px_rgba(6,182,212,0.3)] transition-transform group-hover:scale-105"
+                className="h-32 w-auto object-contain transform translate-y-4 filter drop-shadow-[0_0_8px_rgba(225,29,72,0.3)] transition-transform group-hover:scale-105"
               />
             </div>
 
-            <span className="text-3xl font-black tracking-tighter text-purple-500 drop-shadow-[0_0_5px_rgba(168,85,247,0.3)] uppercase" style={{ fontFamily: 'system-ui, sans-serif' }}>Peak</span>
+            <span className="text-3xl font-black tracking-tighter text-white drop-shadow-[0_0_5px_rgba(255,255,255,0.3)] uppercase" style={{ fontFamily: 'system-ui, sans-serif' }}>Peak</span>
           </Link>
         </div>
 
@@ -74,7 +74,7 @@ export const Header: React.FC = () => {
             <div className="relative" ref={networkRef}>
               <button
                 onClick={() => setIsNetworkOpen(!isNetworkOpen)}
-                className="flex items-center gap-2 px-4 py-2 rounded-full bg-slate-800 hover:bg-slate-700 border border-slate-700 transition-all text-sm font-mono text-cyan-400"
+                className="flex items-center gap-2 px-4 py-2 rounded-full bg-slate-800 hover:bg-slate-700 border border-slate-700 transition-all text-sm font-mono text-crimson-400"
               >
                 <div className={`w-2 h-2 rounded-full ${currentNetwork ? 'bg-green-500' : 'bg-yellow-500'} animate-pulse`}></div>
                 <span className="hidden lg:inline">{currentNetwork?.chainName || 'Wrong Network'}</span>
@@ -89,9 +89,9 @@ export const Header: React.FC = () => {
                       <button
                         key={net.chainId}
                         onClick={() => { switchNetwork(net.chainId); setIsNetworkOpen(false); }}
-                        className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors ${currentNetwork?.chainId === net.chainId ? 'bg-cyan-500/10 text-cyan-400' : 'text-slate-300 hover:bg-white/5'}`}
+                        className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors ${currentNetwork?.chainId === net.chainId ? 'bg-crimson-500/10 text-crimson-400' : 'text-slate-300 hover:bg-white/5'}`}
                       >
-                        <div className={`w-2 h-2 rounded-full ${currentNetwork?.chainId === net.chainId ? 'bg-cyan-400' : 'bg-slate-600'}`}></div>
+                        <div className={`w-2 h-2 rounded-full ${currentNetwork?.chainId === net.chainId ? 'bg-crimson-400' : 'bg-slate-600'}`}></div>
                         {net.chainName}
                       </button>
                     ))}
@@ -106,9 +106,9 @@ export const Header: React.FC = () => {
             <div className="relative" ref={profileRef}>
               <button
                 onClick={() => setIsProfileOpen(!isProfileOpen)}
-                className="flex items-center gap-2 px-3 py-2 rounded-lg bg-slate-800 border border-slate-700 text-white font-medium text-sm hover:border-cyan-500/50 transition-all"
+                className="flex items-center gap-2 px-3 py-2 rounded-lg bg-slate-800 border border-slate-700 text-white font-medium text-sm hover:border-crimson-500/50 transition-all"
               >
-                <span className="w-6 h-6 rounded-full bg-gradient-to-r from-blue-500 to-cyan-500 flex items-center justify-center text-[10px]">
+                <span className="w-6 h-6 rounded-full bg-gradient-to-r from-red-600 to-crimson-500 flex items-center justify-center text-[10px]">
                   {account?.substring(2, 4)}
                 </span>
                 <span className="hidden sm:inline">{account?.substring(0, 6)}...{account?.substring(38)}</span>
@@ -136,7 +136,7 @@ export const Header: React.FC = () => {
           ) : (
             <button
               onClick={connectWallet}
-              className="flex items-center gap-2 px-5 py-2 rounded-lg bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 text-white font-medium text-sm transition-all neon-glow shadow-lg shadow-blue-500/20"
+              className="flex items-center gap-2 px-5 py-2 rounded-lg bg-gradient-to-r from-red-700 to-crimson-600 hover:from-red-600 hover:to-crimson-500 text-white font-medium text-sm transition-all neon-glow shadow-lg shadow-crimson-500/20"
             >
               <Icons.Wallet />
               <span>Connect</span>
