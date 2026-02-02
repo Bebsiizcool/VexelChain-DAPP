@@ -65,7 +65,7 @@ export const MarketAnalysis: React.FC<MarketAnalysisProps> = ({ token }) => {
     }, [token.id, token.change24h, timeframe]);
 
     return (
-        <div className="glass-panel p-6 rounded-xl border border-white/5 bg-slate-900/50 mt-4">
+        <div className="glass-panel p-6 rounded-xl border border-white/5 bg-[#0a0202]/30 mt-4">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
                 <h3 className="text-lg font-bold text-white flex items-center gap-2">
                     <span className="w-2 h-6 bg-gradient-to-b from-red-500 to-crimson-600 rounded-full"></span>
@@ -73,12 +73,12 @@ export const MarketAnalysis: React.FC<MarketAnalysisProps> = ({ token }) => {
                 </h3>
 
                 {/* Timeframe Selector */}
-                <div className="flex bg-slate-800 rounded-lg p-1 border border-white/5">
+                <div className="flex bg-[#1F0505] rounded-lg p-1 border border-white/5">
                     {(['15m', '30m', '1H', '4H', '1D'] as Timeframe[]).map((tf) => (
                         <button
                             key={tf}
                             onClick={() => setTimeframe(tf)}
-                            className={`px-3 py-1 rounded-md text-xs font-bold transition-all ${timeframe === tf ? 'bg-crimson-500 text-white shadow-lg' : 'text-slate-400 hover:text-white hover:bg-white/5'}`}
+                            className={`px-3 py-1 rounded-md text-xs font-bold transition-all ${timeframe === tf ? 'bg-red-600 text-white shadow-lg' : 'text-slate-400 hover:text-white hover:bg-white/5'}`}
                         >
                             {tf}
                         </button>

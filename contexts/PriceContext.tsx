@@ -114,9 +114,21 @@ export const PriceProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         } catch (error) {
             console.error("Error fetching prices:", error);
             if (Object.keys(prices).length === 0) {
-                const fallbackData: any = {};
+                // Provide stable fallbacks for common coins if API fails (e.g. Rate Limit)
+                const fallbackData: any = {
+                    'bitcoin': { usd: 95000, usd_24h_change: 0.5 },
+                    'ethereum': { usd: 3300, usd_24h_change: 1.2 },
+                    'binancecoin': { usd: 600, usd_24h_change: -0.5 },
+                    'tether': { usd: 1, usd_24h_change: 0 },
+                    'usd-coin': { usd: 1, usd_24h_change: 0 },
+                    'matic-network': { usd: 0.45, usd_24h_change: 1.1 },
+                    'bluepeak': { usd: 1.25, usd_24h_change: 5.4 }
+                };
+                // Fill others with generic
                 Object.values(TOKENS).forEach(t => {
-                    fallbackData[t.id] = { usd: 10 + Math.random() * 1000, usd_24h_change: (Math.random() * 10) - 5 };
+                    if (!fallbackData[t.id]) {
+                        fallbackData[t.id] = { usd: 0, usd_24h_change: 0 };
+                    }
                 });
                 apiPricesRef.current = fallbackData;
                 setPrices(fallbackData);

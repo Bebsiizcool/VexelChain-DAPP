@@ -10,10 +10,98 @@
 
 @layer utilities {
   .glass-panel {
-    @apply bg-slate-900/40 backdrop-blur-xl;
+    @apply bg-[#1a0505]/60 backdrop-blur-xl;
   }
-  
+
   .neon-glow {
     box-shadow: 0 0 10px rgba(220, 38, 38, 0.5);
+  }
+
+  /* Shooting Stars Animation */
+  .shooting-star {
+    position: absolute;
+    width: 150px;
+    height: 2px;
+    background: linear-gradient(90deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 100%);
+    border-radius: 999px;
+    filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.8));
+    animation: shoot 4s linear infinite;
+    opacity: 0;
+  }
+
+  @keyframes shoot {
+    0% {
+      transform: rotate(-45deg) translateX(0);
+      opacity: 0.8;
+    }
+
+    70% {
+      opacity: 0.8;
+    }
+
+    100% {
+      transform: rotate(-45deg) translateX(-1000px);
+      opacity: 0;
+    }
+  }
+
+  /* Astronaut Glow Animation */
+  @keyframes breathe-glow {
+
+    0%,
+    100% {
+      filter: drop-shadow(0 0 30px rgba(225, 29, 72, 0.3));
+    }
+
+    50% {
+      filter: drop-shadow(0 0 60px rgba(225, 29, 72, 0.6));
+    }
+  }
+
+  .animate-breathe-glow {
+    animation: breathe-glow 4s ease-in-out infinite;
+  }
+
+  /* Page Entrance Animations */
+  @keyframes fade-in-up {
+    0% {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-fade-in-up {
+    animation: fade-in-up 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    opacity: 0;
+  }
+
+  .animate-fade-in-up-slow {
+    animation: fade-in-up 3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    opacity: 0;
+  }
+
+  .delay-100 {
+    animation-delay: 100ms;
+  }
+
+  .delay-200 {
+    animation-delay: 200ms;
+  }
+
+  .delay-300 {
+    animation-delay: 300ms;
+  }
+
+  .delay-500 {
+    animation-delay: 500ms;
+  }
+
+  .delay-700 {
+    animation-delay: 700ms;
   }
 }

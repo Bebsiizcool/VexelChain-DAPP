@@ -1,39 +1,45 @@
 import React, { useMemo } from 'react';
 import { useWallet } from '../contexts/WalletContext';
 import { useTransactions } from '../contexts/TransactionContext';
-import { usePrices } from '../contexts/PriceContext';
+import { usePrices, TOKENS } from '../contexts/PriceContext';
 
 export const PortfolioPage: React.FC = () => {
     const { account, balance, isConnected, currentNetwork } = useWallet();
-    const { transactions } = useTransactions();
-    const { prices } = usePrices();
+    const { transactions, isLoading } = useTransactions();
+    const { prices, getTokenInfo } = usePrices();
 
-    // Calculate derived balances from transaction history
-    // Assumption: User starts with 0 of everything except the connected wallet's native token (which we read directly)
+    // Calculate derived balances from transaction history for Tokens
     const portfolio = useMemo(() => {
         const holdings: Record<string, number> = {};
 
+        if (!transactions) return holdings;
+
+        console.log("Calculating portfolio from", transactions.length, "transactions");
+
         transactions.forEach(tx => {
-            if (tx.status === 'Completed' && tx.type === 'SWAP') {
-                const toAmt = parseFloat(tx.toAmount);
-                const fromAmt = parseFloat(tx.fromAmount);
+            // We only calculate derived balances for TOKENS, not Native (since we have real native balance)
+            // ERC20 transactions in our context have type 'Token Transfer'
+            if (tx.status === 'Completed' && tx.tokenSymbol && tx.tokenSymbol !== currentNetwork?.nativeCurrency.symbol) {
+                const amt = parseFloat(tx.value);
+                const symbol = tx.tokenSymbol.toUpperCase(); // Normalize
 
-                // Add to bought token
-                holdings[tx.toToken] = (holdings[tx.toToken] || 0) + toAmt;
-
-                // Subtract from sold token (if it's not the native token we read from wallet)
-                // Note: If they sold ETH, we already see the reduced balance from useWallet(), 
-                // BUT only if they actually sent a transaction. Since we are simulating, the wallet balance won't drop on chain.
-                // So for consistency in this "Simulated Environment", we should rely on the wallet balance for Native, 
-                // and calculated balances for others.
-                if (tx.fromToken !== 'ETH' && tx.fromToken !== 'MATIC' && tx.fromToken !== 'BNB') { // Simple check
-                    holdings[tx.fromToken] = (holdings[tx.fromToken] || 0) - fromAmt;
+                if (tx.direction === 'in') {
+                    holdings[symbol] = (holdings[symbol] || 0) + amt;
+                } else {
+                    holdings[symbol] = (holdings[symbol] || 0) - amt;
                 }
             }
         });
 
+        console.log("Derived holdings:", holdings);
+
+        // Remove tokens with <= 0 balance
+        Object.keys(holdings).forEach(key => {
+            if (holdings[key] <= 0.000001) delete holdings[key];
+        });
+
         return holdings;
-    }, [transactions]);
+    }, [transactions, currentNetwork]);
 
     if (!isConnected) {
         return (
@@ -50,7 +56,23 @@ export const PortfolioPage: React.FC = () => {
     }
 
     const nativeSymbol = currentNetwork?.nativeCurrency.symbol || 'ETH';
-    const nativePrice = prices[nativeSymbol]?.usd || prices['ETH']?.usd || 0;
+    const nativeTokenInfo = getTokenInfo(nativeSymbol === 'ETH' ? 'ETH' : nativeSymbol); // map ETH to ETH for lookup
+    // Fallback for ETH if not found (e.g. SepoliaETH might just use ETH price)
+    const nativeId = nativeTokenInfo?.id || (nativeSymbol === 'ETH' || nativeSymbol === 'BNB' || nativeSymbol === 'MATIC' ? TOKENS[nativeSymbol === 'BTC' ? 'bitcoin' : nativeSymbol === 'ETH' ? 'ethereum' : nativeSymbol === 'BNB' ? 'binancecoin' : 'matic-network']?.id : 'ethereum');
+
+    // Simplification: Try to find ID via getTokenInfo, else guess common ones.
+    const getPriceForSymbol = (sym: string) => {
+        const info = getTokenInfo(sym);
+        if (info && prices[info.id]) return prices[info.id].usd;
+        // Fallbacks
+        if (sym === 'ETH' && prices['ethereum']) return prices['ethereum'].usd;
+        if (sym === 'WETH' && prices['weth']) return prices['weth'].usd;
+        if (sym === 'USDT' && prices['tether']) return prices['tether'].usd;
+        if (sym === 'USDC' && prices['usd-coin']) return prices['usd-coin'].usd;
+        return 0;
+    };
+
+    const nativePrice = getPriceForSymbol(nativeSymbol);
     const nativeBalanceVal = parseFloat(balance || '0');
     const nativeValue = nativeBalanceVal * nativePrice;
 
@@ -61,19 +83,19 @@ export const PortfolioPage: React.FC = () => {
             balance: nativeBalanceVal,
             price: nativePrice,
             value: nativeValue,
-            iconColor: 'bg-indigo-500' // Simple default
+            iconColor: 'bg-indigo-600'
         },
         ...Object.entries(portfolio).map(([symbol, amount]) => {
-            const price = Number(prices[symbol]?.usd || 0);
+            const price = getPriceForSymbol(symbol);
             const value = Number(amount) * price;
             return {
                 symbol,
                 balance: Number(amount),
                 price,
                 value,
-                iconColor: 'bg-slate-700' // Default
+                iconColor: 'bg-slate-700'
             };
-        }).filter(a => (a.balance as number) > 0.000001) // Filter out zero/dust
+        })
     ];
 
     const totalNetWorth = allAssets.reduce((acc, curr) => acc + curr.value, 0);
@@ -84,18 +106,18 @@ export const PortfolioPage: React.FC = () => {
 
             {/* Account Overview */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
-                <div className="glass-panel p-6 rounded-2xl border border-white/10 bg-gradient-to-br from-blue-900/20 to-purple-900/20">
+                <div className="glass-panel p-6 rounded-2xl border border-white/10 bg-gradient-to-br from-indigo-900/20 to-purple-900/10">
                     <h3 className="text-sm font-medium text-slate-400 mb-2">Net Worth</h3>
                     <div className="flex items-baseline gap-2">
-                        <span className="text-4xl font-bold text-white">${totalNetWorth.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
-                        {/* Mock change */}
-                        <span className="text-sm font-bold text-green-400">+2.4%</span>
+                        <span className="text-4xl font-bold text-white">
+                            ${totalNetWorth.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                        </span>
                     </div>
                 </div>
                 <div className="glass-panel p-6 rounded-2xl border border-white/10">
                     <h3 className="text-sm font-medium text-slate-400 mb-2">Wallet Address</h3>
                     <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 to-cyan-500 flex items-center justify-center text-white font-bold text-xs">
+                        <div className="w-10 h-10 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 flex items-center justify-center text-white font-bold text-xs">
                             {nativeSymbol[0]}
                         </div>
                         <div>
@@ -127,8 +149,12 @@ export const PortfolioPage: React.FC = () => {
                                         <span className="font-bold text-white">{asset.symbol}</span>
                                     </td>
                                     <td className="p-4 text-white font-mono">{asset.balance.toFixed(4)} {asset.symbol}</td>
-                                    <td className="p-4 text-slate-300">${asset.price.toLocaleString(undefined, { minimumFractionDigits: 2 })}</td>
-                                    <td className="p-4 text-right text-white font-mono">${asset.value.toLocaleString(undefined, { minimumFractionDigits: 2 })}</td>
+                                    <td className="p-4 text-slate-300">
+                                        {asset.price > 0 ? `$${asset.price.toLocaleString(undefined, { minimumFractionDigits: 2 })}` : '-'}
+                                    </td>
+                                    <td className="p-4 text-right text-white font-mono">
+                                        {asset.value > 0 ? `$${asset.value.toLocaleString(undefined, { minimumFractionDigits: 2 })}` : '-'}
+                                    </td>
                                 </tr>
                             ))}
                         </tbody>
@@ -138,10 +164,16 @@ export const PortfolioPage: React.FC = () => {
 
             {/* Transaction History */}
             <div>
-                <h2 className="text-xl font-bold text-white mb-4">Transaction History</h2>
+                <div className="flex items-center justify-between mb-4">
+                    <h2 className="text-xl font-bold text-white">Transaction History</h2>
+                    {isLoading && <span className="text-sm text-slate-400 animate-pulse">Loading...</span>}
+                </div>
+
                 <div className="glass-panel border border-white/10 rounded-2xl overflow-hidden">
                     {transactions.length === 0 ? (
-                        <div className="p-8 text-center text-slate-500">No transactions yet</div>
+                        <div className="p-8 text-center text-slate-500">
+                            {isLoading ? "Loading transactions..." : "No transactions found"}
+                        </div>
                     ) : (
                         <table className="w-full text-left">
                             <thead className="bg-white/5 border-b border-white/10">
@@ -157,19 +189,29 @@ export const PortfolioPage: React.FC = () => {
                                 {transactions.map((tx) => (
                                     <tr key={tx.id} className="hover:bg-white/5 transition-colors">
                                         <td className="p-4">
-                                            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-blue-500/10 text-blue-400 text-xs font-bold border border-blue-500/20">
-                                                {tx.type}
+                                            <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-bold border ${tx.direction === 'in'
+                                                ? 'bg-green-500/10 text-green-400 border-green-500/20'
+                                                : 'bg-orange-500/10 text-orange-400 border-orange-500/20'
+                                                }`}>
+                                                {tx.type === 'Token Transfer' && tx.direction === 'in' ? 'Receive' :
+                                                    tx.type === 'Token Transfer' && tx.direction === 'out' ? 'Send' :
+                                                        tx.type}
                                             </span>
                                         </td>
                                         <td className="p-4">
-                                            <span className="text-white font-medium">Swap {tx.fromAmount} {tx.fromToken} for {tx.toAmount} {tx.toToken}</span>
+                                            <span className="text-white font-medium">
+                                                {tx.direction === 'in' ? '+' : '-'}{parseFloat(tx.value).toFixed(4)} {tx.tokenSymbol}
+                                                <span className="text-slate-500 ml-2 text-xs">
+                                                    {tx.direction === 'in' ? `from ${tx.from.substring(0, 6)}...` : `to ${tx.to.substring(0, 6)}...`}
+                                                </span>
+                                            </span>
                                         </td>
                                         <td className="p-4">
                                             <a
                                                 href={`${currentNetwork?.blockExplorerUrls?.[0]}/tx/${tx.hash}`}
                                                 target="_blank"
                                                 rel="noreferrer"
-                                                className="text-cyan-400 hover:text-cyan-300 text-xs font-mono"
+                                                className="text-indigo-400 hover:text-indigo-300 text-xs font-mono"
                                             >
                                                 {tx.hash.substring(0, 10)}...
                                             </a>
@@ -178,7 +220,9 @@ export const PortfolioPage: React.FC = () => {
                                             {new Date(tx.timestamp).toLocaleString()}
                                         </td>
                                         <td className="p-4 text-right">
-                                            <span className="text-green-400 text-sm font-medium">{tx.status}</span>
+                                            <span className={`text-sm font-medium ${tx.status === 'Completed' ? 'text-green-400' : 'text-red-400'}`}>
+                                                {tx.status}
+                                            </span>
                                         </td>
                                     </tr>
                                 ))}

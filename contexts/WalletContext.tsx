@@ -8,6 +8,8 @@ interface WalletContextType {
     isConnected: boolean;
     currentNetwork: Network | null;
     switchNetwork: (chainId: string) => Promise<void>;
+    balance: string | null;
+    refreshBalance: () => Promise<void>;
 }
 
 interface Network {
@@ -20,6 +22,7 @@ interface Network {
     };
     rpcUrls: string[];
     blockExplorerUrls: string[];
+    apiBaseUrl?: string; // For Etherscan-compatible APIs
 }
 
 export const NETWORKS: { [key: string]: Network } = {
@@ -29,13 +32,15 @@ export const NETWORKS: { [key: string]: Network } = {
         nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
         rpcUrls: ['https://mainnet.infura.io/v3/'],
         blockExplorerUrls: ['https://etherscan.io'],
+        apiBaseUrl: 'https://api.etherscan.io/api',
     },
     '0xaa36a7': {
         chainId: '0xaa36a7',
         chainName: 'Sepolia',
-        nativeCurrency: { name: 'Sepolia Ether', symbol: 'SEP', decimals: 18 },
+        nativeCurrency: { name: 'Sepolia Ether', symbol: 'ETH', decimals: 18 },
         rpcUrls: ['https://sepolia.infura.io/v3/'],
         blockExplorerUrls: ['https://sepolia.etherscan.io'],
+        apiBaseUrl: 'https://api-sepolia.etherscan.io/api',
     },
     '0x89': {
         chainId: '0x89',
@@ -43,6 +48,7 @@ export const NETWORKS: { [key: string]: Network } = {
         nativeCurrency: { name: 'MATIC', symbol: 'MATIC', decimals: 18 },
         rpcUrls: ['https://polygon-rpc.com/'],
         blockExplorerUrls: ['https://polygonscan.com'],
+        apiBaseUrl: 'https://api.polygonscan.com/api',
     },
     '0x38': {
         chainId: '0x38',
@@ -50,6 +56,7 @@ export const NETWORKS: { [key: string]: Network } = {
         nativeCurrency: { name: 'BNB', symbol: 'BNB', decimals: 18 },
         rpcUrls: ['https://bsc-dataseed.binance.org/'],
         blockExplorerUrls: ['https://bscscan.com'],
+        apiBaseUrl: 'https://api.bscscan.com/api',
     },
 };
 
@@ -60,6 +67,29 @@ export const useWallet = () => useContext(WalletContext);
 export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const [account, setAccount] = useState<string | null>(null);
     const [currentNetwork, setCurrentNetwork] = useState<Network | null>(null);
+    const [balance, setBalance] = useState<string | null>(null);
+
+    const refreshBalance = async () => {
+        if (!account || !window.ethereum) {
+            setBalance(null);
+            return;
+        }
+        try {
+            const provider = new ethers.BrowserProvider(window.ethereum);
+            const balanceBigInt = await provider.getBalance(account);
+            setBalance(ethers.formatEther(balanceBigInt));
+        } catch (error) {
+            console.error("Error fetching balance:", error);
+            setBalance(null);
+        }
+    };
+
+    // Update balance when account or network changes
+    useEffect(() => {
+        refreshBalance();
+        const interval = setInterval(refreshBalance, 15000); // Polling every 15s
+        return () => clearInterval(interval);
+    }, [account, currentNetwork]);
 
     // Load state from local storage on mount
     useEffect(() => {
@@ -74,7 +104,14 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
                     if (accounts.length > 0) {
                         setAccount(accounts[0]);
                         const chainId = await window.ethereum.request({ method: 'eth_chainId' });
-                        setCurrentNetwork(NETWORKS[chainId] || null);
+                        const normalizedChainId = chainId.toLowerCase();
+                        setCurrentNetwork(NETWORKS[normalizedChainId] || {
+                            chainId: normalizedChainId,
+                            chainName: 'Unknown Network',
+                            nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
+                            rpcUrls: [],
+                            blockExplorerUrls: []
+                        });
                     }
                 } catch (error) {
                     console.error("Error checking connection:", error);
@@ -87,25 +124,27 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
         // Listen for chain changes
         if (window.ethereum) {
             window.ethereum.on('chainChanged', (chainId: string) => {
+                const normalizedChainId = chainId.toLowerCase();
                 // Handle chain change - reload or update state
-                // Typically recommendation is to reload, but we can update state
-                setCurrentNetwork(NETWORKS[chainId] || null);
+                setCurrentNetwork(NETWORKS[normalizedChainId] || {
+                    chainId: normalizedChainId,
+                    chainName: 'Unknown Network',
+                    nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
+                    rpcUrls: [],
+                    blockExplorerUrls: []
+                });
                 window.location.reload();
             });
             window.ethereum.on('accountsChanged', (accounts: string[]) => {
                 if (accounts.length > 0) {
                     setAccount(accounts[0]);
-                    localStorage.removeItem('isWalletDisconnected'); // Re-enable if external change
+                    localStorage.removeItem('isWalletDisconnected');
                 } else {
                     setAccount(null);
                     localStorage.setItem('isWalletDisconnected', 'true');
                 }
             });
         }
-
-        return () => {
-            // Cleanup listeners if possible (ethers providers usually persist)
-        };
     }, []);
 
     const connectWallet = async () => {
@@ -117,10 +156,17 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
         try {
             const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
             setAccount(accounts[0]);
-            localStorage.removeItem('isWalletDisconnected'); // Clear disconnect flag
+            localStorage.removeItem('isWalletDisconnected');
 
             const chainId = await window.ethereum.request({ method: 'eth_chainId' });
-            setCurrentNetwork(NETWORKS[chainId] || null);
+            const normalizedChainId = chainId.toLowerCase();
+            setCurrentNetwork(NETWORKS[normalizedChainId] || {
+                chainId: normalizedChainId,
+                chainName: 'Unknown Network',
+                nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
+                rpcUrls: [],
+                blockExplorerUrls: []
+            });
 
         } catch (error) {
             console.error("Error connecting wallet:", error);
@@ -167,7 +213,9 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
             disconnectWallet,
             isConnected: !!account,
             currentNetwork,
-            switchNetwork
+            switchNetwork,
+            balance,
+            refreshBalance
         }}>
             {children}
         </WalletContext.Provider>

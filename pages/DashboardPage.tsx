@@ -48,15 +48,19 @@ export const DashboardPage: React.FC = () => {
         <div className="h-[calc(100vh-80px)] overflow-hidden flex">
 
             {/* LEFT SIDEBAR: Token List */}
-            <div className="w-80 flex-shrink-0 border-r border-white/5 bg-slate-900/50 flex flex-col glass-panel m-4 rounded-xl overflow-hidden">
-                <div className="p-4 border-b border-white/5 bg-slate-800/30">
+            <div className="w-80 flex-shrink-0 border-r border-white/5 bg-[#0a0202]/50 flex flex-col glass-panel m-4 rounded-xl overflow-hidden">
+                <div className="p-4 border-b border-white/5 bg-[#1F0505]/30">
                     <div className="relative">
                         <input
                             type="text"
                             placeholder="Search Markets..."
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
-                            className="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 pl-10 text-sm text-white focus:outline-none focus:border-crimson-500"
+                            type="text"
+                            placeholder="Search Markets..."
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                            className="w-full bg-[#1F0505]/50 border border-white/10 rounded-lg px-4 py-2 pl-10 text-sm text-white focus:outline-none focus:border-red-500"
                         />
                         <svg className="w-4 h-4 text-slate-500 absolute left-3 top-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
                     </div>
@@ -66,7 +70,7 @@ export const DashboardPage: React.FC = () => {
                         <button
                             key={t.id}
                             onClick={() => setSelectedTokenId(t.id)}
-                            className={`w-full flex items-center justify-between p-3 rounded-lg transition-all ${selectedTokenId === t.id ? 'bg-crimson-500/10 border border-crimson-500/30' : 'hover:bg-white/5 border border-transparent'}`}
+                            className={`w-full flex items-center justify-between p-3 rounded-lg transition-all ${selectedTokenId === t.id ? 'bg-red-500/10 border border-red-500/30' : 'hover:bg-white/5 border border-transparent'}`}
                         >
                             <div className="flex items-center gap-3">
                                 <img src={CONTEXT_TOKENS[t.id]?.image} className="w-8 h-8 rounded-full" />
@@ -94,13 +98,13 @@ export const DashboardPage: React.FC = () => {
                     {/* Header for selected token */}
                     <div className="glass-panel p-4 rounded-xl border border-white/5 flex items-center justify-between">
                         <div className="flex items-center gap-4">
-                            <img src={CONTEXT_TOKENS[selectedTokenId]?.image} className="w-10 h-10 rounded-full shadow-lg shadow-crimson-500/20" />
+                            <img src={CONTEXT_TOKENS[selectedTokenId]?.image} className="w-10 h-10 rounded-full shadow-lg shadow-red-500/20" />
                             <div>
                                 <h1 className="text-2xl font-bold flex items-center gap-2">
                                     {selectedToken.name} <span className="text-slate-500 text-lg font-normal">/ USD</span>
                                 </h1>
                                 <div className="flex items-center gap-4 text-sm">
-                                    <span className="font-mono text-crimson-400 text-lg">${selectedToken.price.toLocaleString()}</span>
+                                    <span className="font-mono text-white text-lg">${selectedToken.price.toLocaleString()}</span>
                                     <span className={`font-bold px-2 py-0.5 rounded ${selectedToken.change24h >= 0 ? 'bg-green-500/10 text-green-400' : 'bg-red-500/10 text-red-400'}`}>
                                         {selectedToken.change24h.toFixed(2)}% (24h)
                                     </span>

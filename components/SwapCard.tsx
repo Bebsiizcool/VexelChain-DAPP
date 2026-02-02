@@ -3,6 +3,7 @@ import { Icons } from './Icon';
 import { Token } from '../types';
 import { useTransactions } from '../contexts/TransactionContext';
 import { TokenSelectorModal } from './TokenSelectorModal';
+import { useBalances } from '../hooks/useBalances';
 
 interface SwapCardProps {
   tokens: Token[];
@@ -10,6 +11,7 @@ interface SwapCardProps {
 
 export const SwapCard: React.FC<SwapCardProps> = ({ tokens }) => {
   const { addTransaction } = useTransactions();
+  const { getBalance } = useBalances();
   const [fromToken, setFromToken] = useState<Token>(tokens[1] || tokens[0]);
   const [toToken, setToToken] = useState<Token>(tokens[3] || tokens[2]);
 
@@ -140,7 +142,7 @@ export const SwapCard: React.FC<SwapCardProps> = ({ tokens }) => {
     <>
       <div className="glass-panel p-6 rounded-2xl border border-white/10 relative overflow-hidden">
         {/* Decorative gradient blob */}
-        <div className="absolute -top-20 -right-20 w-40 h-40 bg-purple-500/20 rounded-full blur-3xl pointer-events-none"></div>
+        <div className="absolute -top-20 -right-20 w-40 h-40 bg-red-600/10 rounded-full blur-3xl pointer-events-none"></div>
 
         <div className="flex justify-between items-center mb-6 relative z-10">
           <h2 className="text-xl font-bold text-white font-sans">Swap</h2>
@@ -153,7 +155,7 @@ export const SwapCard: React.FC<SwapCardProps> = ({ tokens }) => {
           <div className="bg-black/40 p-4 rounded-xl border border-white/5 hover:border-white/10 transition-colors">
             <div className="flex justify-between mb-2">
               <span className="text-xs text-slate-400 font-medium">From</span>
-              <span className="text-xs text-slate-400 font-medium">Balance: 4.20 {fromToken.symbol}</span>
+              <span className="text-xs text-slate-400 font-medium">Balance: {getBalance(fromToken.symbol).toLocaleString()} {fromToken.symbol}</span>
             </div>
             <div className="flex items-center gap-3">
               <input
@@ -186,7 +188,7 @@ export const SwapCard: React.FC<SwapCardProps> = ({ tokens }) => {
           <div className="flex justify-center -my-3 relative z-20">
             <button
               onClick={handleSwapTokens}
-              className="bg-slate-800 p-2 rounded-lg border border-white/10 text-crimson-400 hover:text-white hover:bg-crimson-500 transition-all shadow-lg"
+              className="bg-[#1F0505] p-2 rounded-lg border border-white/10 text-red-400 hover:text-white hover:bg-red-600 transition-all shadow-lg"
             >
               <Icons.ArrowRightLeft />
             </button>
@@ -195,7 +197,7 @@ export const SwapCard: React.FC<SwapCardProps> = ({ tokens }) => {
           <div className="bg-black/40 p-4 rounded-xl border border-white/5 hover:border-white/10 transition-colors">
             <div className="flex justify-between mb-2">
               <span className="text-xs text-slate-400 font-medium">To</span>
-              <span className="text-xs text-slate-400 font-medium">Balance: 0.00 {toToken.symbol}</span>
+              <span className="text-xs text-slate-400 font-medium">Balance: {getBalance(toToken.symbol).toLocaleString()} {toToken.symbol}</span>
             </div>
             <div className="flex items-center gap-3">
               <input
@@ -207,7 +209,8 @@ export const SwapCard: React.FC<SwapCardProps> = ({ tokens }) => {
               />
               <button
                 onClick={() => openTokenSelector('to')}
-                className="flex items-center gap-2 bg-slate-800 hover:bg-slate-700 text-white px-3 py-1.5 rounded-lg border border-white/10 transition-all min-w-[120px] justify-between cursor-pointer"
+                onClick={() => openTokenSelector('to')}
+                className="flex items-center gap-2 bg-[#1F0505] hover:bg-[#2a0a0a] text-white px-3 py-1.5 rounded-lg border border-white/10 transition-all min-w-[120px] justify-between cursor-pointer"
               >
                 <div className="flex items-center gap-2">
                   {toToken.image ? (
