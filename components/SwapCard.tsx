@@ -209,7 +209,7 @@ export const SwapCard: React.FC<SwapCardProps> = ({ tokens }) => {
               />
               <button
                 onClick={() => openTokenSelector('to')}
-                onClick={() => openTokenSelector('to')}
+
                 className="flex items-center gap-2 bg-[#1F0505] hover:bg-[#2a0a0a] text-white px-3 py-1.5 rounded-lg border border-white/10 transition-all min-w-[120px] justify-between cursor-pointer"
               >
                 <div className="flex items-center gap-2">

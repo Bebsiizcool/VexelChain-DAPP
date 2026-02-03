@@ -27,7 +27,7 @@ export const LandingPage: React.FC = () => {
                             top: `${Math.random() * 100 - 20}%`,
                             left: `${Math.random() * 150 - 25}%`,
                             animationDelay: `${Math.random() * 5}s`,
-                            animationDuration: `${2 + Math.random() * 3}s`
+                            animationDuration: `${4 + Math.random() * 5}s`
                         }}
                     />
                 ))}
@@ -41,7 +41,7 @@ export const LandingPage: React.FC = () => {
                     maskImage: 'linear-gradient(to bottom, black 10%, transparent 85%)'
                 }}
             >
-                <div className="w-full h-full animate-fade-in-up delay-100">
+                <div className="w-full h-full animate-fade-in-up delay-200">
                     <img
                         src="/final_red_moon_glow.png"
                         alt="Red Moon"
@@ -52,7 +52,7 @@ export const LandingPage: React.FC = () => {
             </div>
 
             {/* Layer 3: Martian Landscape (Mid-Ground) */}
-            <div className="absolute bottom-0 left-0 w-full h-[40vh] md:h-[80vh] z-20 pointer-events-none animate-fade-in-up delay-200">
+            <div className="absolute bottom-0 left-0 w-full h-[40vh] md:h-[80vh] z-20 pointer-events-none animate-fade-in-up delay-500">
                 <img
                     src="/final_landscape_glow.png"
                     alt="Martian Terrain"
@@ -62,7 +62,7 @@ export const LandingPage: React.FC = () => {
 
             {/* Layer 3.5: Headline Text (Behind Astronaut) */}
             <div className="absolute top-[15%] md:top-[12%] left-0 w-full z-30 flex flex-col items-center justify-center text-center pointer-events-none -translate-y-[45px]">
-                <h1 className="text-5xl md:text-9xl font-black text-white tracking-tighter leading-[0.9] drop-shadow-2xl uppercase animate-fade-in-up-slow delay-400">
+                <h1 className="text-5xl md:text-9xl font-black text-white tracking-tighter leading-[0.9] drop-shadow-2xl uppercase animate-fade-in-down delay-700">
                     THE FUTURE IS <br />
                     <span className="tracking-tighter [text-shadow:0_0_2px_white] block mt-2" style={{ wordSpacing: '220px' }}>VEXEL CHAIN</span>
                 </h1>
@@ -70,17 +70,17 @@ export const LandingPage: React.FC = () => {
 
             {/* Layer 4: Astronaut (Fixed Foreground) */}
             <div className="absolute bottom-0 md:bottom-[-10%] left-1/2 -translate-x-1/2 w-[160vw] md:w-[1000px] lg:w-[1400px] xl:w-[1600px] z-40 pointer-events-none">
-                <div className="w-full h-auto animate-fade-in-up-slow delay-400">
+                <div className="w-full h-auto animate-fade-in-up delay-500">
                     <img
-                        src="/final_astronaut_glow.png"
-                        alt="BluePeak Pilot"
+                        src="/astronaut-hd.png"
+                        alt="Vexel Chain Pilot"
                         className="w-full h-auto max-h-[100vh] object-contain animate-breathe-glow"
                     />
                 </div>
             </div>
 
             {/* Layer 5: Content Overlay (Top Section) - Left Aligned */}
-            <div className="absolute top-[50%] md:top-[55%] left-0 w-full z-50 px-6 md:px-12 lg:px-24 flex flex-col items-start text-left pointer-events-none animate-fade-in-up delay-700">
+            <div className="absolute top-[50%] md:top-[55%] left-0 w-full z-50 px-6 md:px-12 lg:px-24 flex flex-col items-start text-left pointer-events-none animate-fade-in-up delay-1000">
                 <div className="pointer-events-auto w-full max-w-[500px] md:h-[260px] flex flex-col justify-center items-center text-center bg-black/40 backdrop-blur-md rounded-3xl p-6 border border-white/10">
                     <div className="mb-4">
                         <h2 className="text-3xl md:text-5xl font-black text-white leading-tight mb-2 drop-shadow-xl font-sans tracking-tight">

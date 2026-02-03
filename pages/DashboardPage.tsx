@@ -38,14 +38,14 @@ export const DashboardPage: React.FC = () => {
 
     const selectedToken = tokenList.find(t => t.id === selectedTokenId) || tokenList[0] || ({} as Token);
 
-    // Mock Data for Custom Chart (BluePeak)
+    // Mock Data for Custom Chart (Vexel Chain)
     const mockChartData: ChartDataPoint[] = Array.from({ length: 24 }, (_, i) => ({
         time: `${i}:00`,
-        value: (prices['bluepeak']?.usd || 1.25) * (1 + (Math.random() * 0.1 - 0.05))
+        value: (prices['vexel-chain']?.usd || 1.25) * (1 + (Math.random() * 0.1 - 0.05))
     }));
 
     return (
-        <div className="h-[calc(100vh-80px)] overflow-hidden flex">
+        <div className="h-[calc(100vh-80px)] overflow-hidden flex animate-fade-in">
 
             {/* LEFT SIDEBAR: Token List */}
             <div className="w-80 flex-shrink-0 border-r border-white/5 bg-[#0a0202]/50 flex flex-col glass-panel m-4 rounded-xl overflow-hidden">
@@ -56,10 +56,7 @@ export const DashboardPage: React.FC = () => {
                             placeholder="Search Markets..."
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
-                            type="text"
-                            placeholder="Search Markets..."
-                            value={searchTerm}
-                            onChange={(e) => setSearchTerm(e.target.value)}
+
                             className="w-full bg-[#1F0505]/50 border border-white/10 rounded-lg px-4 py-2 pl-10 text-sm text-white focus:outline-none focus:border-red-500"
                         />
                         <svg className="w-4 h-4 text-slate-500 absolute left-3 top-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>

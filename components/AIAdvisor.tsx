@@ -21,8 +21,8 @@ export const AIAdvisor: React.FC<AIAdvisorProps> = ({ token, allTokens }) => {
 
   return (
     <div className="glass-panel p-6 rounded-2xl border border-white/10 h-full flex flex-col relative overflow-hidden">
-       {/* Background accent */}
-       <div className="absolute top-0 right-0 w-64 h-64 bg-cyan-500/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none"></div>
+      {/* Background accent */}
+      <div className="absolute top-0 right-0 w-64 h-64 bg-cyan-500/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none"></div>
 
       <div className="flex items-center gap-3 mb-6 relative z-10">
         <div className="w-10 h-10 rounded-full bg-indigo-500/20 flex items-center justify-center border border-indigo-500/30">
@@ -31,7 +31,7 @@ export const AIAdvisor: React.FC<AIAdvisorProps> = ({ token, allTokens }) => {
           </svg>
         </div>
         <div>
-          <h2 className="text-xl font-bold text-white font-sans">BluePeak AI Analyst</h2>
+          <h2 className="text-xl font-bold text-white font-sans">Vexel Chain AI Analyst</h2>
           <p className="text-xs text-slate-400">Powered by Gemini 2.0 Flash</p>
         </div>
       </div>
@@ -42,7 +42,7 @@ export const AIAdvisor: React.FC<AIAdvisorProps> = ({ token, allTokens }) => {
             <p className="text-slate-400 mb-6 max-w-xs">
               Generate a real-time market sentiment analysis for <span className="text-white font-bold">{token.name}</span> based on current technical indicators and market volume.
             </p>
-            <button 
+            <button
               onClick={handleAnalyze}
               className="px-6 py-3 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg font-medium transition-all shadow-lg shadow-indigo-500/25 flex items-center gap-2"
             >
@@ -63,11 +63,10 @@ export const AIAdvisor: React.FC<AIAdvisorProps> = ({ token, allTokens }) => {
           <div className="space-y-6 animate-fade-in">
             <div className="flex items-center justify-between bg-black/30 p-4 rounded-xl border border-white/5">
               <span className="text-slate-400 text-sm">Sentiment</span>
-              <span className={`px-3 py-1 rounded-full text-xs font-bold border ${
-                analysis.sentiment === MarketSentiment.BULLISH ? 'bg-green-500/10 text-green-400 border-green-500/20' :
-                analysis.sentiment === MarketSentiment.BEARISH ? 'bg-red-500/10 text-red-400 border-red-500/20' :
-                'bg-slate-500/10 text-slate-400 border-slate-500/20'
-              }`}>
+              <span className={`px-3 py-1 rounded-full text-xs font-bold border ${analysis.sentiment === MarketSentiment.BULLISH ? 'bg-green-500/10 text-green-400 border-green-500/20' :
+                  analysis.sentiment === MarketSentiment.BEARISH ? 'bg-red-500/10 text-red-400 border-red-500/20' :
+                    'bg-slate-500/10 text-slate-400 border-slate-500/20'
+                }`}>
                 {analysis.sentiment}
               </span>
             </div>
@@ -94,9 +93,9 @@ export const AIAdvisor: React.FC<AIAdvisorProps> = ({ token, allTokens }) => {
               <h4 className="text-xs font-bold text-indigo-400 uppercase tracking-wider mb-1">Recommendation</h4>
               <p className="text-sm font-medium text-white">{analysis.recommendation}</p>
             </div>
-            
-            <button 
-              onClick={handleAnalyze} 
+
+            <button
+              onClick={handleAnalyze}
               className="w-full text-xs text-slate-500 hover:text-indigo-400 underline decoration-indigo-500/30 underline-offset-4 transition-colors text-center"
             >
               Refresh Analysis

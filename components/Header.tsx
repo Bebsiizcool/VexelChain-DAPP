@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Icons } from './Icon';
 import { useWallet, NETWORKS } from '../contexts/WalletContext';
-import logo from '../assets/logo.png';
+import logo from '../assets/vexel-logo.png';
 
 export const Header: React.FC = () => {
   const { account, connectWallet, disconnectWallet, isConnected, currentNetwork, switchNetwork } = useWallet();
@@ -35,7 +35,7 @@ export const Header: React.FC = () => {
 
   return (
     <header className="sticky top-0 z-50 w-full" style={{ backgroundColor: '#6F1019' }}>
-      <div className="container mx-auto px-4 h-20 flex items-center justify-between">
+      <div className="container mx-auto px-4 h-20 flex items-center justify-between relative">
 
         {/* Branding */}
         <Link to="/" className="flex items-center gap-3 group">
@@ -44,17 +44,38 @@ export const Header: React.FC = () => {
             alt="Vexel Chain Logo"
             className="h-12 w-auto object-contain transition-transform group-hover:scale-105"
           />
-          <span className="text-3xl font-bold tracking-widest text-white uppercase" style={{ fontFamily: '"Orbitron", sans-serif' }}>
+          <span className="text-3xl font-black tracking-widest text-white uppercase" style={{ fontFamily: '"Orbitron", sans-serif', letterSpacing: '0.15em' }}>
             VEXEL
           </span>
         </Link>
 
-        {/* Navigation - Centered relative to available space or right-aligned to brand? Using simple flex gap */}
-        <nav className="hidden md:flex items-center gap-8 text-sm font-medium">
-          <Link to="/" className={`${isActive('/')} transition-colors`}>Home</Link>
-          <Link to="/dashboard" className={`${isActive('/dashboard')} transition-colors`}>Trade</Link>
-          <Link to="/portfolio" className={`${isActive('/portfolio')} transition-colors`}>Portfolio</Link>
-          <Link to="/news" className={`${isActive('/news')} transition-colors`}>News</Link>
+        {/* Navigation - Absolute Centered */}
+        <nav className="hidden md:flex items-center gap-1 text-sm font-medium absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+          {[
+            { path: '/', label: 'Home' },
+            { path: '/dashboard', label: 'Swap' },
+            { path: '/portfolio', label: 'Portfolio' },
+            { path: '/news', label: 'News' }
+          ].map((link) => (
+            <Link
+              key={link.path}
+              to={link.path}
+              className={`relative px-4 py-2 rounded-full transition-all duration-300 group ${location.pathname === link.path ? 'text-white' : 'text-white/70 hover:text-white'}`}
+            >
+              {/* Hover Glow Background */}
+              <span className={`absolute inset-0 rounded-full bg-white/5 scale-75 opacity-0 group-hover:scale-100 group-hover:opacity-100 transition-all duration-300 ${location.pathname === link.path ? 'scale-100 opacity-100 bg-white/10' : ''}`}></span>
+
+              {/* Text Content */}
+              <span className="relative z-10 flex items-center gap-2">
+                {link.label}
+              </span>
+
+              {/* Animated Underline (Active Indicator) */}
+              {location.pathname === link.path && (
+                <span className="absolute bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 bg-red-500 rounded-full shadow-[0_0_8px_rgba(239,68,68,0.8)]"></span>
+              )}
+            </Link>
+          ))}
         </nav>
 
         {/* Right: Network & Wallet */}

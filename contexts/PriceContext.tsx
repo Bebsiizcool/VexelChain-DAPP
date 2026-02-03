@@ -71,7 +71,7 @@ export const TOKENS: { [key: string]: { name: string, symbol: string, id: string
     'elrond-erd-2': { name: 'MultiversX', symbol: 'EGLD', id: 'elrond-erd-2', image: 'https://coin-images.coingecko.com/coins/images/12335/large/egld-token-logo.png', chartSymbol: 'BINANCE:EGLDUSDT' },
     'sandbox': { name: 'The Sandbox', symbol: 'SAND', id: 'sandbox', image: 'https://coin-images.coingecko.com/coins/images/12129/large/sandbox_logo.jpg', chartSymbol: 'BINANCE:SANDUSDT' },
     'tezos': { name: 'Tezos', symbol: 'XTZ', id: 'tezos', image: 'https://coin-images.coingecko.com/coins/images/976/large/Tezos-Logo.png', chartSymbol: 'BINANCE:XTZUSDT' },
-    'bluepeak': { name: 'BluePeak', symbol: 'BPK', id: 'bluepeak', image: 'https://img.icons8.com/fluency/96/mountain.png', chartSymbol: 'CUSTOM:BPK' }
+    'vexel-chain': { name: 'Vexel Chain', symbol: 'VXL', id: 'vexel-chain', image: '/favicon.png', chartSymbol: 'CUSTOM:VXL' }
 };
 
 interface PriceContextType {
@@ -100,13 +100,13 @@ export const PriceProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
     const fetchPrices = async () => {
         try {
-            const ids = Object.values(TOKENS).filter(t => t.id !== 'bluepeak').map(t => t.id).join(',');
+            const ids = Object.values(TOKENS).filter(t => t.id !== 'vexel-chain').map(t => t.id).join(',');
             // Batch if needed, currently sending all (URL length should be OK for ~70 IDs)
             const response = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${ids}&vs_currencies=usd&include_24hr_change=true`);
             const data = await response.json();
 
-            // Add Mock BPK
-            data.bluepeak = { usd: 1.25 + (Math.random() * 0.1 - 0.05), usd_24h_change: 5.4 };
+            // Add Mock VXL
+            data['vexel-chain'] = { usd: 1.25 + (Math.random() * 0.1 - 0.05), usd_24h_change: 5.4 };
 
             apiPricesRef.current = data;
             setPrices(data); // Immediate update
@@ -122,7 +122,7 @@ export const PriceProvider: React.FC<{ children: React.ReactNode }> = ({ childre
                     'tether': { usd: 1, usd_24h_change: 0 },
                     'usd-coin': { usd: 1, usd_24h_change: 0 },
                     'matic-network': { usd: 0.45, usd_24h_change: 1.1 },
-                    'bluepeak': { usd: 1.25, usd_24h_change: 5.4 }
+                    'vexel-chain': { usd: 1.25, usd_24h_change: 5.4 }
                 };
                 // Fill others with generic
                 Object.values(TOKENS).forEach(t => {

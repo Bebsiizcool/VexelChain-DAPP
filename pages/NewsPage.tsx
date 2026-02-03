@@ -126,7 +126,7 @@ export const NewsPage: React.FC = () => {
     }
 
     return (
-        <div className="pt-8 pb-16 min-h-screen container mx-auto px-4">
+        <div className="pt-8 pb-16 min-h-screen container mx-auto px-4 animate-fade-in">
             <h1 className="text-4xl font-bold mb-8 text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-red-600">
                 Market Insights
             </h1>
@@ -138,8 +138,8 @@ export const NewsPage: React.FC = () => {
                         key={cat}
                         onClick={() => setActiveCategory(cat)}
                         className={`px-6 py-2 rounded-full text-sm font-bold transition-all border border-white/5 ${activeCategory === cat
-                                ? 'bg-red-600 text-white shadow-lg shadow-red-500/30'
-                                : 'bg-black/20 text-slate-400 hover:bg-white/5 hover:text-white'
+                            ? 'bg-red-600 text-white shadow-lg shadow-red-500/30'
+                            : 'bg-black/20 text-slate-400 hover:bg-white/5 hover:text-white'
                             }`}
                     >
                         {cat}
